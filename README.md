@@ -1,15 +1,15 @@
-## @hpi/taskwarrior
+## @hpi/airtable
 
 ### Installation
 
 ```bash
-git clone git@github.com:Qnzl-HPI/taskwarrior.git
+git clone git@github.com:hpi/airtable.git
 
 # Install node requirements
 npm install
 
 # Install data access layer
-pip3 install .
+python3 -m pip install -e .
 
 # Build the executables
 npm run build
