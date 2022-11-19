@@ -1,0 +1,19 @@
+{
+  "name": "@hpi/airtable",
+  "version": "0.0.1",
+  "bin": {
+    "airtable": "bin/airtable.js"
+  },
+  "scripts": {
+    "build": "pkg bin/airtable.js --out-path pkg/"
+  },
+  "author": "Madeline <maddie@qnzl.co>",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "commander": "^7.1.0",
+    "dayjs": "^1.10.4",
+    "node-fetch": "^2.6.0",
+    "server": "^1.0.32"
+  },
+  "description": ""
+}
