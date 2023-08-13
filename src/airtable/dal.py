@@ -24,23 +24,25 @@ class DAL:
             with f.open(encoding="utf-8") as fo:
                 yield json.load(fo)
 
-    def table_records(self, findBaseName = None, findTableName = None) -> Iterator[Res[Json]]:
-      raw = self.raw()
+    def latest(self):
+      latest_file = sorted(self.sources)[-1]
 
-      for r in self.raw():
-        baseNames = r.keys()
-        print(baseNames)
+      with latest_file.open(encoding="utf-8") as fo:
+          return json.load(fo)
 
-        if findBaseName and findTableName:
-          for table in r[findBaseName]['recordsByTable']:
-            if table['name'] == findTableName:
+    def records(self, base_name: str = None, table_name: str = None) -> Iterator[Res[Json]]:
+      for base in self.latest():
+        if base_name and table_name and base_name == base['name']:
+          for table in base['recordsByTable']:
+            if table['name'] == table_name:
               yield table
             else:
               continue
-        elif findBaseName:
-          yield r[findBaseName]
-        else:
-          yield r
+
+        elif base_name and base_name == base['name']:
+          yield base
+        elif base_name is None and table_name is None:
+          yield base
 
 if __name__ == '__main__':
     dal_helper.main(DAL=DAL)

@@ -78,6 +78,11 @@ async function dump({ apiKey, exportPath, exportFormat }) {
 
         const { records } = await getRecordsRes.json();
 
+        // Purposefully cause fields to be double stringified
+        // so it can be consumed by GraphQL easily
+        records.map((record) => {
+          record.fields = JSON.stringify(record.fields)
+        })
         return {
           name: table.name,
           records,
@@ -87,16 +92,15 @@ async function dump({ apiKey, exportPath, exportFormat }) {
       });
 
       return {
-        [base.name]: {
-          recordsByTable: await Promise.all(recordPromises),
-          id: base.id,
-        },
+        recordsByTable: await Promise.all(recordPromises),
+        id: base.id,
+        name: base.name
       };
     });
 
     const recordsByBase = await Promise.all(basePromises);
 
-    const dump = JSON.stringify(Object.assign(...recordsByBase));
+    const dump = JSON.stringify(recordsByBase);
 
     await fs.writeFile(EXPORT_PATH, dump);
   } catch (e) {
